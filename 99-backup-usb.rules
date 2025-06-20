@@ -1,0 +1,8 @@
+# Reglas udev para detección automática de dispositivos USB de respaldo
+# Este archivo debe ubicarse en /etc/udev/rules.d/99-backup-usb.rules
+
+# Regla para detectar dispositivos de almacenamiento USB
+SUBSYSTEM=="block", KERNEL=="sd[a-z][0-9]", ENV{ID_BUS}=="usb", ENV{ID_FS_TYPE}!="", ACTION=="add", RUN+="/usr/local/bin/backup-usb-handler %k"
+
+# Regla para limpiar cuando se desconecta el dispositivo
+SUBSYSTEM=="block", KERNEL=="sd[a-z][0-9]", ENV{ID_BUS}=="usb", ACTION=="remove", RUN+="/usr/local/bin/backup-usb-cleanup %k"
